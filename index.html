@@ -13,24 +13,8 @@
       background-color: #f5f5f5;
       color: #333;
     }
-    .quote-container {
-      transition: all 0.3s ease;
-    }
     .quote-text {
       font-family: 'Playfair Display', serif;
-    }
-    .history-item {
-      transition: all 0.2s ease;
-    }
-    .history-item:hover {
-      transform: translateX(5px);
-    }
-    .fade-in {
-      animation: fadeIn 0.5s ease-in;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
     }
     .loader {
       border: 3px solid #f3f3f3;
@@ -53,6 +37,7 @@
       <h1 class="text-4xl font-bold text-amber-800 mb-2">Библейская Мудрость</h1>
       <p class="text-gray-600">Найди вдохновение в вечных истинах</p>
     </header>
+
     <main>
       <div class="bg-white rounded-xl shadow-lg p-8 mb-8 quote-container">
         <div class="flex justify-center mb-6">
@@ -69,21 +54,21 @@
           </button>
         </div>
       </div>
+
       <div class="bg-white rounded-xl shadow-lg p-6">
         <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
           <i class="fas fa-history mr-2 text-amber-600"></i> История цитат
         </h2>
-        <div id="historyList" class="space-y-3">
-          <!-- Здесь будут появляться просмотренные цитаты -->
-        </div>
+        <div id="historyList" class="space-y-3"></div>
         <div id="emptyHistory" class="text-center py-6 text-gray-500">
           <i class="fas fa-book-open text-3xl mb-2"></i>
           <p>Здесь будут появляться просмотренные цитаты</p>
         </div>
       </div>
     </main>
+
     <footer class="mt-12 text-center text-gray-500 text-sm">
-      <p>© 2023 Библейские цитаты | Источник: bible-api.com</p>
+      <p>© 2025 Библейские цитаты | Источник: bible-api.com</p>
     </footer>
   </div>
 
@@ -101,21 +86,20 @@
       const bookMapping = {
         "Бытие": "Genesis", "Исход": "Exodus", "Левит": "Leviticus",
         "Числа": "Numbers", "Второзаконие": "Deuteronomy", "Иисус Навин": "Joshua",
-        "Судьи": "Judges", "Руфь": "Ruth", "1 Царств": "1 Samuel",
-        "2 Царств": "2 Samuel", "3 Царств": "1 Kings", "4 Царств": "2 Kings",
-        "1 Паралипоменон": "1 Chronicles", "2 Паралипоменон": "2 Chronicles",
-        "Ездра": "Ezra", "Неемия": "Nehemiah", "Есфирь": "Esther", "Иов": "Job",
-        "Псалтирь": "Psalm", "Притчи": "Proverbs", "Екклесиаст": "Ecclesiastes",
-        "Песня Песней": "Song of Solomon", "Исаия": "Isaiah", "Иеремия": "Jeremiah",
-        "Плач Иеремии": "Lamentations", "Иезекииль": "Ezekiel", "Даниил": "Daniel",
-        "Осия": "Hosea", "Иоиль": "Joel", "Амос": "Amos", "Авдий": "Obadiah",
-        "Иона": "Jonah", "Михей": "Micah", "Наум": "Nahum", "Аввакум": "Habakkuk",
-        "Софония": "Zephaniah", "Аггей": "Haggai", "Захария": "Zechariah",
-        "Малахия": "Malachi", "Матфея": "Matthew", "Марка": "Mark", "Луки": "Luke",
-        "Иоанна": "John", "Деяния": "Acts", "Римлянам": "Romans",
-        "1 Коринфянам": "1 Corinthians", "2 Коринфянам": "2 Corinthians",
+        "Судьи": "Judges", "Руфь": "Ruth", "1 Царств": "1 Samuel", "2 Царств": "2 Samuel",
+        "3 Царств": "1 Kings", "4 Царств": "2 Kings", "1 Паралипоменон": "1 Chronicles",
+        "2 Паралипоменон": "2 Chronicles", "Ездра": "Ezra", "Неемия": "Nehemiah",
+        "Есфирь": "Esther", "Иов": "Job", "Псалтирь": "Psalm", "Притчи": "Proverbs",
+        "Екклесиаст": "Ecclesiastes", "Песня Песней": "Song of Solomon", "Исаия": "Isaiah",
+        "Иеремия": "Jeremiah", "Плач Иеремии": "Lamentations", "Иезекииль": "Ezekiel",
+        "Даниил": "Daniel", "Осия": "Hosea", "Иоиль": "Joel", "Амос": "Amos",
+        "Авдий": "Obadiah", "Иона": "Jonah", "Михей": "Micah", "Наум": "Nahum",
+        "Аввакум": "Habakkuk", "Софония": "Zephaniah", "Аггей": "Haggai",
+        "Захария": "Zechariah", "Малахия": "Malachi", "Матфея": "Matthew",
+        "Марка": "Mark", "Луки": "Luke", "Иоанна": "John", "Деяния": "Acts",
+        "Римлянам": "Romans", "1 Коринфянам": "1 Corinthians", "2 Коринфянам": "2 Corinthians",
         "Галатам": "Galatians", "Ефесянам": "Ephesians", "Филиппийцам": "Philippians",
-        "Колоссянам": "Colossians", "1 Фессалоникийцам": "1 Thessalonians",
+        "Колоссянам": "Colossians", "1 Фессалоникийцам": "1 Thessalonies",
         "2 Фессалоникийцам": "2 Thessalonies", "1 Тимофею": "1 Timothy",
         "2 Тимофею": "2 Timothy", "Титу": "Titus", "Филимону": "Philemon",
         "Евреям": "Hebrews", "Иакова": "James", "1 Петра": "1 Peter",
@@ -128,7 +112,7 @@
       async function getRandomQuote(maxRetries = 5) {
         try {
           loader.classList.remove('hidden');
-          quoteElement.classList.add('hidden');
+          quoteElement.classList.add('opacity-0');
 
           const randomBook = bibleBooks[Math.floor(Math.random() * bibleBooks.length)];
           const isOldTestament = bibleBooks.indexOf(randomBook) < 39;
@@ -140,9 +124,7 @@
           const verse = Math.floor(Math.random() * maxVerse) + 1;
 
           const apiBookName = bookMapping[randomBook];
-          const apiUrl = `https://bible-api.com/ ${encodeURIComponent(apiBookName)}+${chapter}:${verse}?translation=rus`;
-
-          console.log("Запрос к API:", apiUrl);
+          const apiUrl = `https://bible-api.com/ ${encodeURIComponent(apiBookName)}+${chapter}:${verse}?translation=rus&_=${Date.now()}`;
 
           const response = await fetch(apiUrl);
           const data = await response.json();
@@ -153,37 +135,34 @@
               reference: data.reference
             };
           } else if (maxRetries > 0) {
-            console.warn("Пустой ответ от API, повторная попытка...");
+            console.warn("Пустой ответ от API. Повторная попытка...");
             return await getRandomQuote(maxRetries - 1);
           } else {
             throw new Error("Не удалось загрузить цитату после нескольких попыток");
           }
         } catch (error) {
           console.error("Ошибка при получении цитаты:", error);
-          return {
-            text: "Блажен человек, который переносит искушение...",
-            reference: "Иакова 1:12"
-          };
+          return getDefaultQuote();
         } finally {
           loader.classList.add('hidden');
-          quoteElement.classList.remove('hidden');
+          quoteElement.classList.remove('opacity-0');
         }
       }
 
-      async function updateQuote() {
-        quoteElement.classList.remove('fade-in');
-        quoteElement.style.opacity = '0';
+      function getDefaultQuote() {
+        return {
+          text: "Блажен человек, который переносит искушение...",
+          reference: "Иакова 1:12"
+        };
+      }
 
-        setTimeout(async () => {
-          const newQuote = await getRandomQuote();
-          quoteElement.innerHTML = `
-            <p class="quote-text text-2xl italic text-gray-800 mb-4">"${newQuote.text}"</p>
-            <p class="text-gray-600 font-medium">${newQuote.reference}</p>
-          `;
-          addToHistory(newQuote);
-          quoteElement.classList.add('fade-in');
-          quoteElement.style.opacity = '1';
-        }, 300);
+      async function updateQuote() {
+        const newQuote = await getRandomQuote();
+        quoteElement.innerHTML = `
+          <p class="quote-text text-2xl italic text-gray-800 mb-4">"${newQuote.text}"</p>
+          <p class="text-gray-600 font-medium">${newQuote.reference}</p>
+        `;
+        addToHistory(newQuote);
       }
 
       function addToHistory(quote) {
@@ -203,10 +182,10 @@
           historyList.innerHTML = '';
         } else {
           emptyHistory.classList.add('hidden');
-          historyList.innerHTML = history.map(quote => `
-            <div class="history-item p-3 bg-gray-50 rounded-lg border-l-4 border-amber-500">
-              <p class="text-gray-700">"${quote.text.split(' ').slice(0, 10).join(' ')}${quote.text.split(' ').length > 10 ? '...' : ''}"</p>
-              <p class="text-sm text-gray-500 mt-1">${quote.reference}</p>
+          historyList.innerHTML = history.map(q => `
+            <div class="p-3 bg-gray-50 rounded-lg border-l-4 border-amber-500 mb-2">
+              <p class="text-gray-700">"${q.text.split(' ').slice(0, 10).join(' ')}..."</p>
+              <p class="text-sm text-gray-500 mt-1">${q.reference}</p>
             </div>
           `).join('');
         }
@@ -214,13 +193,15 @@
 
       newQuoteBtn.addEventListener('click', updateQuote);
 
-      updateHistoryUI();
-
       (async function init() {
         for (let i = 0; i < 2; i++) {
           const quote = await getRandomQuote();
           addToHistory(quote);
         }
+        quoteElement.innerHTML = `
+          <p class="quote-text text-2xl italic text-gray-800 mb-4">"${history[0].text}"</p>
+          <p class="text-gray-600 font-medium">${history[0].reference}</p>
+        `;
       })();
     });
   </script>
