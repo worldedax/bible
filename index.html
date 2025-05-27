@@ -55,15 +55,19 @@
       quoteDiv.textContent = "Загрузка...";
 
       try {
-        // Шаг 1: Получаем страницу со случайным стихом
-        const res = await fetch('https://azbyka.ru/bible/random/ ');
-        const html = await res.text();
+        // Используем CORS-прокси для обхода политики безопасности
+        const proxy = 'https://corsproxy.io/? ';
+        const url = 'https://azbyka.ru/bible/random/ ';
+        const response = await fetch(proxy + encodeURIComponent(url));
 
-        // Шаг 2: Создаём DOM-парсер для извлечения данных
+        if (!response.ok) throw new Error('Ошибка сети');
+
+        const html = await response.text();
+
+        // Парсим HTML и находим нужные элементы
         const parser = new DOMParser();
         const doc = parser.parseFromString(html, 'text/html');
 
-        // Ищем элементы с текстом стиха и названием
         const verseText = doc.querySelector('.versetext')?.innerText.trim();
         const verseRef = doc.querySelector('.versetitle')?.innerText.trim();
 
@@ -73,12 +77,12 @@
             <p>"${verseText}"</p>
           `;
         } else {
-          quoteDiv.textContent = "Ошибка парсинга стиха";
+          quoteDiv.textContent = 'Не удалось найти текст стиха';
         }
 
       } catch (err) {
-        console.error("Ошибка:", err);
-        quoteDiv.textContent = "Не удалось загрузить цитату. Попробуйте позже.";
+        console.error('Ошибка:', err);
+        quoteDiv.textContent = 'Ошибка загрузки цитаты';
       }
     }
   </script>
