@@ -1,52 +1,41 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
   <title>Случайный стих из Библии</title>
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f4f6f8;
-      color: #333;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 50px 20px;
+      font-family: Arial, sans-serif;
+      padding: 40px;
       text-align: center;
-    }
-    h1 {
-      margin-bottom: 20px;
+      background: #f9f9f9;
     }
     #quote {
-      font-size: 1.2em;
-      margin: 20px 0;
       max-width: 600px;
-      line-height: 1.6;
-      background: #fff;
+      margin: 20px auto;
       padding: 20px;
+      background: white;
       border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
     button {
-      padding: 12px 24px;
+      padding: 10px 20px;
       font-size: 1em;
-      background-color: #28a745;
+      background-color: #4CAF50;
       color: white;
       border: none;
       cursor: pointer;
       border-radius: 5px;
-      transition: background 0.3s ease;
     }
     button:hover {
-      background-color: #218838;
+      background-color: #45a049;
     }
   </style>
 </head>
 <body>
 
   <h1>Библейская Мудрость</h1>
-  <div id="quote">Нажмите «Еще мудрость», чтобы получить цитату.</div>
+  <div id="quote">Загрузка...</div>
   <button onclick="getVerse()">Еще мудрость</button>
 
   <script>
@@ -55,39 +44,29 @@
       quoteDiv.textContent = "Загрузка...";
 
       try {
-        // Шаг 1: Получаем случайный стих на английском
-        const res = await fetch("https://bible-api.com/?random=1 ");
-        if (!res.ok) throw new Error("Ошибка загрузки стиха");
+        // Запрашиваем страницу со случайным стихом
+        const res = await fetch('https://azbyka.ru/bible/random/ ');
+        const html = await res.text();
 
-        const data = await res.json();
-        if (!data.verses || !data.verses.length) throw new Error("Пустой ответ от API");
+        // Парсим нужные данные из HTML
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
 
-        const verse = data.verses[0];
+        const verseText = doc.querySelector('.versetext')?.innerText.trim();
+        const verseRef = doc.querySelector('.versetitle')?.innerText.trim();
 
-        // Шаг 2: Переводим текст стиха на русский
-        const translateRes = await fetch("https://translate.terraprint.co/translate ", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            q: verse.text,
-            source: "en",
-            target: "ru"
-          })
-        });
-
-        if (!translateRes.ok) throw new Error("Ошибка перевода");
-
-        const translated = await translateRes.json();
-
-        // Шаг 3: Выводим результат
-        quoteDiv.innerHTML = `
-          <p><strong>${verse.book_name} ${verse.chapter}:${verse.verse}</strong></p>
-          <p>"${translated.translatedText}"</p>
-        `;
+        if (verseText && verseRef) {
+          quoteDiv.innerHTML = `
+            <p><strong>${verseRef}</strong></p>
+            <p>"${verseText}"</p>
+          `;
+        } else {
+          quoteDiv.textContent = "Ошибка парсинга стиха";
+        }
 
       } catch (err) {
-        console.error("Ошибка:", err);
-        quoteDiv.textContent = "Не удалось загрузить цитату. Проверьте интернет.";
+        console.error(err);
+        quoteDiv.textContent = "Ошибка загрузки стиха";
       }
     }
   </script>
