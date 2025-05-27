@@ -1,34 +1,45 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Случайный стих из Библии</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      padding: 40px;
+      background-color: #f4f6f8;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 50px 20px;
       text-align: center;
-      background: #f9f9f9;
+    }
+    h1 {
+      margin-bottom: 20px;
     }
     #quote {
+      font-size: 1.2em;
+      margin: 20px 0;
       max-width: 600px;
-      margin: 20px auto;
+      line-height: 1.6;
+      background: #fff;
       padding: 20px;
-      background: white;
       border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
     button {
-      padding: 10px 20px;
+      padding: 12px 24px;
       font-size: 1em;
-      background-color: #4CAF50;
+      background-color: #28a745;
       color: white;
       border: none;
       cursor: pointer;
       border-radius: 5px;
+      transition: background 0.3s ease;
     }
     button:hover {
-      background-color: #45a049;
+      background-color: #218838;
     }
   </style>
 </head>
@@ -44,14 +55,15 @@
       quoteDiv.textContent = "Загрузка...";
 
       try {
-        // Запрашиваем страницу со случайным стихом
+        // Шаг 1: Получаем страницу со случайным стихом
         const res = await fetch('https://azbyka.ru/bible/random/ ');
         const html = await res.text();
 
-        // Парсим нужные данные из HTML
+        // Шаг 2: Создаём DOM-парсер для извлечения данных
         const parser = new DOMParser();
         const doc = parser.parseFromString(html, 'text/html');
 
+        // Ищем элементы с текстом стиха и названием
         const verseText = doc.querySelector('.versetext')?.innerText.trim();
         const verseRef = doc.querySelector('.versetitle')?.innerText.trim();
 
@@ -65,8 +77,8 @@
         }
 
       } catch (err) {
-        console.error(err);
-        quoteDiv.textContent = "Ошибка загрузки стиха";
+        console.error("Ошибка:", err);
+        quoteDiv.textContent = "Не удалось загрузить цитату. Попробуйте позже.";
       }
     }
   </script>
